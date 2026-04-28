@@ -28,16 +28,27 @@ spec:
     spec:
       containers:
         - name: elasticsearch
-          image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+          image:  docker.elastic.co/elasticsearch/elasticsearch:8.5.0
           env:
             - name: discovery.type
               value: single-node
+            - name: network.host
+              value: "0.0.0.0"
             - name: ES_JAVA_OPTS
               value: "-Xms512m -Xmx512m"
             - name: xpack.security.enabled
               value: "false"
+            - name: xpack.security.transport.ssl.enabled
+              value: "false"
+            - name: xpack.security.http.ssl.enabled
+              value: "false"
+            - name: node.store.allow_mmap
+              value: "false"
+            - name: cluster.name
+              value: "k8s-logging"
           ports:
             - containerPort: 9200
+            - containerPort: 9300
           resources:
             limits:
               memory: "2Gi"
